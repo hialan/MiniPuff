@@ -1,0 +1,7 @@
+<resources>
+    <style name="MiniPuffTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimaryDark">@color/minipuff_dark</item>
+        <item name="colorPrimary">@color/minipuff_default</item>
+    </style>
+</resources>
