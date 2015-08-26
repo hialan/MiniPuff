@@ -106,14 +106,61 @@ no parameter
 }
 ````
 
-
 ## POST /users/:id/profile
 
 Update user profile (a profile picture and 3 multi-select questions)
 
 ### Request
 
+````json
+{
+    "profile_image": "http://some.url/some_image.jpg",
+    "questions": [
+        {
+            "description": "question a",
+            "options": [
+                {
+                    "text": "option a-1"
+                },
+                {
+                    "text": "option a-2"
+                }
+            ]
+        },
+        {
+            "description": "question b",
+            "options": [
+                {
+                    "text": "option b-1"
+                },
+                {
+                    "text": "option b-2"
+                }
+            ]
+        },
+        {
+            "description": "question c",
+            "options": [
+                {
+                    "text": "option c-1"
+                },
+                {
+                    "text": "option c-2"
+                }
+            ]
+        }
+    ]
+}
+````
+
 ### Response
+
+````json
+{
+    "status": "ok | fail"
+    "messages": "error messages",
+}
+````
 
 ## GET /account/match_users
 
