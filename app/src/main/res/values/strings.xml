@@ -6,4 +6,6 @@
     <string name="title_activity_profile">ProfileActivity</string>
 
     <string name="hello_world">Hello world!</string>
+
+    <string name="facebook_app_id">524040201076732</string>
 </resources>
