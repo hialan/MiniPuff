@@ -157,8 +157,8 @@ Update user profile (a profile picture and 3 multi-select questions)
 
 ````json
 {
-    "status": "ok | fail"
-    "messages": "error messages",
+    "status": "ok | fail",
+    "messages": "error messages"
 }
 ````
 
