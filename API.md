@@ -1,22 +1,59 @@
-MiniPuff API
-============
+# MiniPuff API
 
-GET /users/recommand_stream
--------------------------------
+## GET /users/recommand_stream
 
 Get main question stream
 
+### Request:
 
-POST /users/:id/answers
------------------------
+| parameter | type | required | description |
+|-----------|------|----------|-------------|
+| start     | int  | optional | for pagination, start from which object. Default: 1 |
+| count     | int  | optional | for pagination, count of return object. Default: 10 |
+
+### Response:
+
+````json
+{
+    "users": [
+        {
+            "id": "facebook id 1",
+            "nick_name": "red puff",
+            "profile_image": "http://some.url/some_image.jpg"
+        },
+        {
+            "id": "facebook id 2",
+            "nick_name": "blue puff",
+            "profile_image": "http://some.url/some_image.jpg"
+        },
+        {
+            "id": "facebook id 3",
+            "nick_name": "green puff",
+            "profile_image": "http://some.url/some_image.jpg"
+        },
+        {
+            "id": "facebook id 4",
+            "nick_name": "yellow puff",
+            "profile_image": "http://some.url/some_image.jpg"
+        }
+    ]
+}
+````
+
+## POST /users/:id/answers
 
 answer :id's questions 
 
 
-GET /users/:id/profile
-----------------------
+## GET /users/:id/profile
 
 Get user profile (with questions)
+
+### Request:
+
+no parameter
+
+### Response:
 
 ````json
 {
@@ -70,16 +107,48 @@ Get user profile (with questions)
 ````
 
 
-POST /users/:id/profile
------------------------
+## POST /users/:id/profile
 
 Update user profile (a profile picture and 3 multi-select questions)
 
+### Request
 
-GET /account/match_users
-------------------------
+### Response
+
+## GET /account/match_users
 
 get user list who knows all the right answers to my questions
 
+### Request
 
+no parameter
+
+### Response
+
+````json
+{
+    "users": [
+        {
+            "id": "facebook id 1",
+            "nick_name": "red puff",
+            "profile_image": "http://some.url/some_image.jpg"
+        },
+        {
+            "id": "facebook id 2",
+            "nick_name": "blue puff",
+            "profile_image": "http://some.url/some_image.jpg"
+        },
+        {
+            "id": "facebook id 3",
+            "nick_name": "green puff",
+            "profile_image": "http://some.url/some_image.jpg"
+        },
+        {
+            "id": "facebook id 4",
+            "nick_name": "yellow puff",
+            "profile_image": "http://some.url/some_image.jpg"
+        }
+    ]
+}
+````
 
