@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="minipuff_dark" type="color">#FF2A0755</item>
+    <item name="minipuff_default" type="color">#FF400090</item>
+    <item name="white" type="color">#FFFFFFFF</item>
+</resources>
