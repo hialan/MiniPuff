@@ -18,6 +18,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -69,6 +70,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         populateQuestions();
+
+        User user = User.fromFacebookProfile(fbProfile);
+        ParseObject parseUser = getParseUser(user);
+
+    }
+
+    private ParseObject getParseUser(User user) {
+        ParseObject parseUser = new ParseObject("User");
+        return parseUser;
     }
 
     @Override
