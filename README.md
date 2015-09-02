@@ -7,13 +7,12 @@ MiniPuff encourages you to post questions you believe a close friend and/or part
 As a MiniPuff user, I should be able to:
 
 - [ ] Log in to the app with my Facebook account
-- [ ] Post my own entry with a profile picture and 3 multi-select questions
-- [ ] Browse a list of candidates with profile picture and location
-- [ ] Tap on a candidate and be prompt with his/her question
-- [ ] Answer candidates' questions with selection prompt
-- [ ] Be notified whether I got all the answers correct or not
-- [ ] Receive info from user who knows all the right answers to my questions
-- [ ] Kindly send a personal message to whom got all my questions right
+- [ ] Post 2-5 of my own multi-select questions
+- [ ] Be provided with a question with answer options
+- [ ] Be notified whether I got the answer right or wrong
+- [ ] Be provided with next question
+- [ ] Go into chat room with whom I got his/her 2 questions right
+- [ ] Browse a list of previously chatted candidate
 
 ## Nice to Haves
 

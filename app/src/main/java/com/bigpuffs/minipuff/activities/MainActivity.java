@@ -7,9 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.bigpuffs.minipuff.R;
+import com.bigpuffs.minipuff.adapters.OptionsAdapter;
+import com.bigpuffs.minipuff.models.Question;
 import com.bigpuffs.minipuff.models.User;
+
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 
@@ -18,14 +22,17 @@ import com.parse.Parse;
 
 public class MainActivity extends AppCompatActivity {
 
-    final int REQUEST_CODE = 42;
-
+    public static final int GET_PROFILE = 42;
     public static final String USER = "User";
 
     private SharedPreferences userSharedPref;
     private User user;
 
     private Profile fbProfile;
+    private Question question;
+    private OptionsAdapter aOption;
+
+    private ListView lvOptions;
 
     private void initParse() {
         Parse.enableLocalDatastore(this);
@@ -33,9 +40,17 @@ public class MainActivity extends AppCompatActivity {
                 this.getString(R.string.PARSE_CLIENT_KEY));
     }
 
-    private void populateQuestion() {
+    private void populateQuestions() {
         setContentView(R.layout.activity_main);
-        Log.i("USERNAME", fbProfile.getName());
+
+        question = new Question();
+
+        aOption = new OptionsAdapter(this, question.options);
+
+        lvOptions = (ListView) findViewById(R.id.lvOptions);
+        lvOptions.setAdapter(aOption);
+
+        return;
     }
 
     @Override
@@ -49,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (fbProfile == null) {
             Intent i = new Intent(this, LoginActivity.class);
-            startActivityForResult(i, REQUEST_CODE);
+            startActivityForResult(i, GET_PROFILE);
             return;
         }
 
-        populateQuestion();
+        populateQuestions();
     }
 
     @Override
@@ -62,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             System.err.println("Unexpected result code: " + resultCode);
             return;
         }
-        if (requestCode != REQUEST_CODE) {
+        if (requestCode != GET_PROFILE) {
             System.err.println("Unexpected request code: " + requestCode);
             return;
         }
@@ -71,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (fbProfile == null) {
             Intent i = new Intent(this, LoginActivity.class);
-            startActivityForResult(i, REQUEST_CODE);
+            startActivityForResult(i, GET_PROFILE);
             return;
         }
 
-        populateQuestion();
+        populateQuestions();
         return;
     }
 
@@ -91,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.miProfile) {
             Intent i = new Intent(this, LoginActivity.class);
-            startActivityForResult(i, REQUEST_CODE);
+            startActivityForResult(i, GET_PROFILE);
         } else {
             Log.w("OPTIONS", "Unknown menu item");
         }

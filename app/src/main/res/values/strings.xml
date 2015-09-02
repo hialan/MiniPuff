@@ -8,4 +8,7 @@
     <string name="PARSE_CLIENT_KEY">Wzodffh3otImP8Wi4n8Wlg8naFa3guryrbZ55hnx</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_question">QuestionActivity</string>
+    <string name="example_question">What is the best flavor for ice-cream?</string>
+    <string name="hello_world">Hello world!</string>
 </resources>
