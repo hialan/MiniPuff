@@ -28,6 +28,8 @@ public class User {
      */
     public String birthday; // TODO: check type
 
+    public String imageUrl;
+
     /**
      * Following information is from user_friends of Facebook
      *
@@ -56,6 +58,7 @@ public class User {
         user.name = profile.getName();
         user.firstName = profile.getFirstName();
         user.lastName = profile.getLastName();
+        user.imageUrl = profile.getProfilePictureUri(800, 800).toString();
 
         return user;
     }

@@ -11,4 +11,5 @@
     <string name="title_activity_question">QuestionActivity</string>
     <string name="example_question">What is the best flavor for ice-cream?</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_parse_client_test">ParseClientTestActivity</string>
 </resources>

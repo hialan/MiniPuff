@@ -15,10 +15,9 @@ import com.bigpuffs.minipuff.adapters.CandidatesAdapter;
 import com.bigpuffs.minipuff.models.Candidate;
 import com.bigpuffs.minipuff.models.Question;
 import com.bigpuffs.minipuff.models.User;
-
+import com.bigpuffs.minipuff.parse.ParseClient;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -26,7 +25,6 @@ import com.parse.ParseObject;
 public class MainActivity extends AppCompatActivity {
 
     public static final int GET_PROFILE = 42;
-    public static final String USER = "User";
 
     private SharedPreferences userSharedPref;
     private User user;
@@ -63,7 +61,13 @@ public class MainActivity extends AppCompatActivity {
         initParse();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        fbProfile = Profile.getCurrentProfile();
+        Profile profile = Profile.getCurrentProfile();
+        onFbProfileChange(profile);
+        populateQuestions();
+    }
+
+    private void onFbProfileChange(Profile profile) {
+        fbProfile = profile;
 
         if (fbProfile == null) {
             Intent i = new Intent(this, LoginActivity.class);
@@ -71,16 +75,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        populateQuestions();
-
         User user = User.fromFacebookProfile(fbProfile);
-        ParseObject parseUser = getParseUser(user);
+        ParseObject parseUser = ParseClient.getInstance().getParseUser(user.id);
 
-    }
+        if(parseUser == null) {
+            parseUser = ParseClient.getInstance().createNewParseUser(user);
+        }
 
-    private ParseObject getParseUser(User user) {
-        ParseObject parseUser = new ParseObject("User");
-        return parseUser;
     }
 
     @Override
@@ -94,13 +95,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        fbProfile = data.getParcelableExtra("profile");
-
-        if (fbProfile == null) {
-            Intent i = new Intent(this, LoginActivity.class);
-            startActivityForResult(i, GET_PROFILE);
-            return;
-        }
+        Profile profile = data.getParcelableExtra("profile");
+        onFbProfileChange(profile);
 
         populateQuestions();
         return;

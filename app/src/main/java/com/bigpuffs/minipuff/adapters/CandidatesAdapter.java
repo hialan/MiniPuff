@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.bigpuffs.minipuff.models.Candidate;
 import com.bigpuffs.minipuff.R;
-import com.squareup.picasso.Picasso;
+import com.bigpuffs.minipuff.models.Candidate;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class CandidatesAdapter extends ArrayAdapter<Candidate> {
 
         ImageView ivCandidate = (ImageView) convertView.findViewById(R.id.ivCandidate);
         ivCandidate.setImageResource(0);
-        Picasso.with(getContext()).load(candidate.imageUrl).into(ivCandidate);
+        //Picasso.with(getContext()).load(candidate.imageUrl).into(ivCandidate);
 
         return convertView;
     }

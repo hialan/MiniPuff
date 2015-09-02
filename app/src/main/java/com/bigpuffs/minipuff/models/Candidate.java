@@ -1,13 +1,11 @@
 package com.bigpuffs.minipuff.models;
 
-import java.io.Serializable;
+import com.parse.ParseObject;
 
-public class Candidate implements Serializable {
-    private static final long serialVersionUID = -1100409068878822422L;
+import java.util.ArrayList;
 
-    public String imageUrl;
-
-    public Candidate(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+public class Candidate{
+    public String userId;
+    public ParseObject parseUser;
+    public ArrayList<Question> questions;
 }
