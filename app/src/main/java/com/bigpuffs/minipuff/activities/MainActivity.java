@@ -7,93 +7,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
-import com.bigpuffs.minipuff.models.Candidate;
-import com.bigpuffs.minipuff.adapters.CandidatesAdapter;
 import com.bigpuffs.minipuff.R;
 import com.bigpuffs.minipuff.models.Question;
 import com.bigpuffs.minipuff.models.User;
-import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.login.widget.LoginButton;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String USER = "User";
-    private SharedPreferences userSharedPref;
+    final int REQUEST_CODE = 42;
 
+    public static final String USER = "User";
+
+    private SharedPreferences userSharedPref;
     private User user;
 
-    private ArrayList<Candidate> candidates;
-    private CandidatesAdapter aCandidates;
-    private GridView gvCandidates;
-
-    // Facebook
-    private LoginButton loginButton;
-    private CallbackManager callbackManager;
-    private ProfileTracker profileTracker;
-    private Profile currentFbProfile;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_main);
-
-        initFacebook();
-        initParse();
-
-        candidates = new ArrayList<>();
-        aCandidates = new CandidatesAdapter(this, candidates);
-
-        gvCandidates = (GridView) findViewById(R.id.gvCandidates);
-        gvCandidates.setAdapter(aCandidates);
-        gvCandidates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(i);
-            }
-        });
-
-    }
-
-    private void initFacebook() {
-        callbackManager = CallbackManager.Factory.create();
-
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("public_profile, user_birthday, user_location, user_friends");
-
-        // update current profile
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(
-                    Profile oldProfile,
-                    Profile currentProfile) {
-                MainActivity.this.currentFbProfile = currentProfile;
-            }
-        };
-
-        // If user has login in this Android device, then we can get Profile object
-        // from persistence storage
-        currentFbProfile = Profile.getCurrentProfile();
-        user = User.fromFacebookProfile(currentFbProfile);
-    }
+    private Profile fbProfile;
 
     private void initParse() {
         Parse.enableLocalDatastore(this);
@@ -101,16 +38,50 @@ public class MainActivity extends AppCompatActivity {
                 this.getString(R.string.PARSE_CLIENT_KEY));
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+    private void populateQuestion() {
+        setContentView(R.layout.activity_main);
+        Log.i("USERNAME", fbProfile.getName());
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        profileTracker.stopTracking();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        initParse();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        fbProfile = Profile.getCurrentProfile();
+
+        if (fbProfile == null) {
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivityForResult(i, REQUEST_CODE);
+            return;
+        }
+
+        populateQuestion();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            System.err.println("Unexpected result code: " + resultCode);
+            return;
+        }
+        if (requestCode != REQUEST_CODE) {
+            System.err.println("Unexpected request code: " + requestCode);
+            return;
+        }
+
+        fbProfile = data.getParcelableExtra("profile");
+
+        if (fbProfile == null) {
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivityForResult(i, REQUEST_CODE);
+            return;
+        }
+
+        populateQuestion();
+        return;
     }
 
     @Override
@@ -124,9 +95,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.miProfile) {
-            Intent i = new Intent(MainActivity.this, ProfileActivity.class);
-            startActivity(i);
-            return true;
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivityForResult(i, REQUEST_CODE);
+        } else {
+            Log.w("OPTIONS", "Unknown menu item");
         }
 
         return super.onOptionsItemSelected(item);
@@ -178,6 +150,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
 
 }
