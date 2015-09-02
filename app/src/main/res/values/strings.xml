@@ -5,7 +5,8 @@
     <string name="profile">Profile</string>
     <string name="title_activity_profile">ProfileActivity</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="FACEBOOK_APP_ID">524040201076732</string>
 
-    <string name="facebook_app_id">524040201076732</string>
+    <string name="PARSE_APP_ID">O8mJdLyfTQktIUA5YKwtJ49Mu3TAOIwY6nmac0ln</string>
+    <string name="PARSE_CLIENT_KEY">Wzodffh3otImP8Wi4n8Wlg8naFa3guryrbZ55hnx</string>
 </resources>
