@@ -28,51 +28,42 @@ public class ParseClient {
         parseUser.put("timezone", user.timezone);
         parseUser.put("livesIn", user.livesIn);
         parseUser.put("birthday", user.birthday);
-        parseUser.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("success", "user saved");
-                } else {
-                    Log.d(getClass().getSimpleName(), "error: " + e);
-                }
-            }
-        });
-        return parseUser;
+        try {
+            parseUser.save();
+            return parseUser;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public static void saveUserQuestions(ParseObject parseUser, ArrayList<Question> questions) {
+    public static boolean saveUserQuestions(ParseObject parseUser, ArrayList<Question> questions) {
         ParseObject parseQuestions = new ParseObject("Question");
         parseQuestions.put("user", parseUser);
         parseQuestions.put("questions", questions);
-        parseQuestions.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("success", "questions saved");
-                } else {
-                    Log.d(getClass().getSimpleName(), "error: " + e);
-                }
-            }
-        });
+        try {
+            parseQuestions.save();
+            return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    public static ArrayList<ParseObject> getCandidates(User user, int offset) {
+    public static List<ParseObject> getCandidates(User user, int offset) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
         query.whereNotEqualTo("id", user.id);
         query.setLimit(5);
         query.setSkip(offset);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
-                    Log.d("success", list.toString());
-                } else {
-                    Log.d(getClass().getSimpleName(), "error: " + e);
-                }
-            }
-        });
+        try {
+            List<ParseObject> candidateList = query.find();
+            return candidateList;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return null;
     }
+
+
 
 }
