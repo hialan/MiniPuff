@@ -90,6 +90,27 @@ public class ParseClient {
         return false;
     }
 
+    public ArrayList<Question> getQuestions(User user) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_QUESTION);
+        query.whereEqualTo("userId", user.id);
+        try {
+            ParseObject parseObject = query.getFirst();
+            ArrayList<Question> questions = new ArrayList<>();
+
+            JSONArray questionsJSON = parseObject.getJSONArray("questions");
+            for (int i = 0; i < questionsJSON.length(); i++) {
+                questions.add(new Question(questionsJSON.getJSONObject(i)));
+            }
+            return questions;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     public List<Candidate> getCandidate(User user, int offset) {
         HashMap<String, Boolean> matchResult = getMatchUserList(user);

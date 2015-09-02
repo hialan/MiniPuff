@@ -9,6 +9,11 @@ public class Option {
 
     public Option() { }
 
+    public Option(String text, boolean selected) {
+        this.text = text;
+        this.selected = selected;
+    }
+
     public Option(JSONObject json) {
         try {
             selected = json.getBoolean("selected");

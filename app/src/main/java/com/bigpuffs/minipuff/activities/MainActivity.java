@@ -7,11 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.bigpuffs.minipuff.R;
 import com.bigpuffs.minipuff.adapters.OptionsAdapter;
-import com.bigpuffs.minipuff.adapters.CandidatesAdapter;
 import com.bigpuffs.minipuff.models.Candidate;
 import com.bigpuffs.minipuff.models.Question;
 import com.bigpuffs.minipuff.models.User;
@@ -21,6 +21,9 @@ import com.facebook.Profile;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences userSharedPref;
     private User user;
-
     private Profile fbProfile;
-    private Question question;
+    private List<Candidate> candidates;
+
     private OptionsAdapter aOption;
 
     private ListView lvOptions;
@@ -44,12 +47,22 @@ public class MainActivity extends AppCompatActivity {
     private void populateQuestions() {
         setContentView(R.layout.activity_main);
 
-        question = new Question();
 
-        aOption = new OptionsAdapter(this, question.options);
+        if (user != null) {
+            //// not enougth test data
+            // Question question = candidates.get(0).questions.get(0);
 
-        lvOptions = (ListView) findViewById(R.id.lvOptions);
-        lvOptions.setAdapter(aOption);
+            ArrayList<Question> questions = ParseClient.getInstance().getQuestions(user);
+            Question question = questions.get(0);
+
+            aOption = new OptionsAdapter(this, question.options);
+
+            EditText et = (EditText) findViewById(R.id.editText);
+            et.setText(question.title);
+
+            lvOptions = (ListView) findViewById(R.id.lvOptions);
+            lvOptions.setAdapter(aOption);
+        }
 
         return;
     }
@@ -61,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
         initParse();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        Profile.fetchProfileForCurrentAccessToken();
         Profile profile = Profile.getCurrentProfile();
+
         onFbProfileChange(profile);
         populateQuestions();
     }
@@ -75,13 +91,41 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        User user = User.fromFacebookProfile(fbProfile);
+        user = User.fromFacebookProfile(fbProfile);
         ParseObject parseUser = ParseClient.getInstance().getParseUser(user.id);
 
         if(parseUser == null) {
             parseUser = ParseClient.getInstance().createNewParseUser(user);
         }
+        candidates = ParseClient.getInstance().getCandidate(user, 0);
 
+        /* for generate test data
+        Question q1 = new Question();
+        q1.title = "What's your favorite color?";
+        q1.options = new ArrayList<>();
+        q1.options.add(new Option("Red", false));       // 0
+        q1.options.add(new Option("White", false));     // 1
+        q1.options.add(new Option("Yellow", false));    // 2
+        q1.options.add(new Option("Blue", false));      // 3
+        q1.answer = 3;
+
+        Question q2 = new Question();
+        q2.title = "What's your company?";
+        q2.options = new ArrayList<>();
+        q2.options.add(new Option("Yahoo", false));     // 0
+        q2.options.add(new Option("HooYa", false));     // 1
+        q2.answer = 0;
+
+        ArrayList<Question> questions = new ArrayList<>();
+        questions.add(q1);
+        questions.add(q2);
+
+        ParseClient.getInstance().saveUserQuestions(parseUser, questions);
+
+        questions = ParseClient.getInstance().getQuestions(user);
+
+        Log.d("DEBUG", "Test");
+        */
     }
 
     @Override

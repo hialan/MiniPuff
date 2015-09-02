@@ -5,12 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.RadioButton;
 
-import com.bigpuffs.minipuff.models.Candidate;
 import com.bigpuffs.minipuff.R;
 import com.bigpuffs.minipuff.models.Option;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -27,6 +25,9 @@ public class OptionsAdapter extends ArrayAdapter<Option> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_option, parent, false);
         }
+
+        RadioButton radioButton = (RadioButton) convertView.findViewById(R.id.radioButton);
+        radioButton.setText(option.text);
 
         return convertView;
     }
