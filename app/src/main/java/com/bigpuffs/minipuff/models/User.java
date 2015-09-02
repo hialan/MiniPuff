@@ -45,6 +45,11 @@ public class User {
     public ArrayList<UserFacebookFriend> userFriends;
 
     public static User fromFacebookProfile(Profile profile) {
+
+        if (profile == null) {
+            return null;
+        }
+
         User user = new User();
 
         user.id = profile.getId();

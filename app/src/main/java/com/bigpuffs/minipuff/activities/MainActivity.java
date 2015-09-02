@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 import com.bigpuffs.minipuff.R;
 import com.bigpuffs.minipuff.adapters.OptionsAdapter;
+import com.bigpuffs.minipuff.adapters.CandidatesAdapter;
+import com.bigpuffs.minipuff.models.Candidate;
 import com.bigpuffs.minipuff.models.Question;
 import com.bigpuffs.minipuff.models.User;
 
