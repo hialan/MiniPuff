@@ -1,4 +1,4 @@
-package com.bigpuffs.minipuff;
+package com.bigpuffs.minipuff.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.bigpuffs.minipuff.models.Candidate;
+import com.bigpuffs.minipuff.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

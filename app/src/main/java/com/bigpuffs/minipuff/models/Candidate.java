@@ -1,4 +1,4 @@
-package com.bigpuffs.minipuff;
+package com.bigpuffs.minipuff.models;
 
 import java.io.Serializable;
 
